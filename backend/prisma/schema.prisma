@@ -21,7 +21,7 @@ model User {
 model Url {
   id            Int       @id @default(autoincrement())
   originalUrl   String    @db.Text
-  shortCode     String    @unique @db.VarChar(20)
+  shortCode     String?    @unique @db.VarChar(20)
   title         String?   @db.VarChar(191)
   clickCount    Int       @default(0)
   userId        Int?

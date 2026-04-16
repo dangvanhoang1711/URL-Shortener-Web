@@ -11,8 +11,8 @@ async function shortenUrl(req, res) {
     const result = await shortenerService.createShortUrl(url);
 
     return res.json({
-      short_url: `http://localhost:3000/${result.short_code}`,
-      original_url: result.original_url,
+      short_url: `http://localhost:3001/${result.shortCode}`,
+      original_url: result.originalUrl,
     });
   } catch (err) {
     console.error(err);

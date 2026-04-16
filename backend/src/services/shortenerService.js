@@ -3,20 +3,21 @@ const prisma = new PrismaClient();
 const { encodeBase62 } = require("../utils/base62");
 
 async function createShortUrl(originalUrl) {
-  // 1. Insert trước để lấy ID
   const newUrl = await prisma.url.create({
     data: {
-      original_url: originalUrl,
+      originalUrl: originalUrl, 
     },
   });
 
-  // 2. Encode ID → short_code
+  // 2. Encode ID → shortCode
   const shortCode = encodeBase62(newUrl.id);
 
-  // 3. Update lại record
+  // 3. Update lại record 
   const updatedUrl = await prisma.url.update({
     where: { id: newUrl.id },
-    data: { short_code: shortCode },
+    data: { 
+      shortCode: shortCode 
+    },
   });
 
   return updatedUrl;
