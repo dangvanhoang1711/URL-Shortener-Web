@@ -1,7 +1,11 @@
+require("dotenv").config();
+
 const app = require("./app");
 
-const PORT = process.env.PORT || 3000;
+// Ép kiểu Number để đảm bảo port hợp lệ
+const port = Number(process.env.PORT || 3001);
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(port, () => {
+  console.log(`🚀 Backend is running on port ${port}`);
+  console.log(`🔗 Health check: http://localhost:${port}/health`);
 });
