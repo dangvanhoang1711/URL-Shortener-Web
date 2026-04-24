@@ -1,0 +1,29 @@
+{
+  "name": "url-shortener-web",
+  "version": "1.0.0",
+  "description": "<p align=\"center\">\r   🚀 Modern URL Shortener built with Node.js, React & Redis  \r </p>",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dangvanhoang1711/URL-Shortener-Web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dangvanhoang1711/URL-Shortener-Web/issues"
+  },
+  "homepage": "https://github.com/dangvanhoang1711/URL-Shortener-Web#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.14"
+  }
+}

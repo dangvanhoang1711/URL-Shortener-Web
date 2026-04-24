@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique @db.VarChar(191)
+  password  String   @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  urls      Url[]
+
+  @@map("users")
+}
+
+model Url {
+  id            Int       @id @default(autoincrement())
+  originalUrl   String    @db.Text
+  shortCode     String?    @unique @db.VarChar(20)
+  title         String?   @db.VarChar(191)
+  clickCount    Int       @default(0)
+  userId        Int?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  expiresAt     DateTime?
+  lastClickedAt DateTime?
+
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  clicks Click[]
+
+  @@index([createdAt])
+  @@index([userId, createdAt])
+  @@index([clickCount])
+  @@map("urls")
+}
+
+model Click {
+  id          BigInt   @id @default(autoincrement())
+  urlId       Int
+  ipAddress   String?  @db.VarChar(64)
+  userAgent   String?  @db.VarChar(512)
+  referer     String?  @db.VarChar(512)
+  countryCode String?  @db.Char(2)
+  clickedAt   DateTime @default(now())
+
+  url Url @relation(fields: [urlId], references: [id], onDelete: Cascade)
+
+  @@index([urlId, clickedAt])
+  @@index([clickedAt])
+  @@map("clicks")
+}
