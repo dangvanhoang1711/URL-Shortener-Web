@@ -1084,8 +1084,8 @@
 | **NEW** | **Authentication (Register/Login)** | ✅ **Hoàn thành** | ❌ Chưa làm | **45%** | **P1** | **HMHieu** |
 | **NEW** | **QR Code Generation** | ❌ Chưa làm | ❌ Chưa làm | 0% | **P1** | **NMHieu** |
 | **Extra** | User Dashboard | ❌ Chưa làm | ❌ Chưa làm | 0% | P2 | VănHoàng |
-    | **Extra** | Input Validation | ✅ **Làm trong auth** | ❌ Chưa làm | **40%** | P1 | HMHieu |
-    | **Extra** | Error Handling Middleware | ✅ **Hoàn thành** | ⚠️ Cơ bản | **95%** | P1 | HMHieu |
+| **Extra** | Input Validation | ✅ **Làm trong auth** | ❌ Chưa làm | **40%** | P1 | HMHieu |
+| **Extra** | Error Handling Middleware | ✅ **Hoàn thành** | ⚠️ Cơ bản | **95%** | P1 | HMHieu |
 | **Extra** | Rate Limiting | ❌ Chưa làm | ❌ Chưa làm | 0% | P2 | HMHieu |
 | **Testing** | Unit Tests | ❌ Chưa làm | ❌ Chưa làm | 0% | P1 | NhuHoàng |
 | **Testing** | Postman/API Tests | ✅ **Auth endpoints** | ❌ Chưa làm | **30%** | P1 | HMHieu/NMHieu |
@@ -1095,7 +1095,7 @@
 | **Documentation** | API Specification | ✅ **+ Auth endpoints** | - | **90%** | P1 | HMHieu |
 | **Documentation** | Architecture Diagram | ✅ Hoàn thành | - | 90% | P1 | Cả nhóm |
 
-   **Chú thích**:
+**Chú thích**:
    - ✅ **Hoàn thành**: Feature đã implement và test thành công
    - ⚠️ **Partial**: Feature đang tiến hành hoặc có phần cơ bản
    - ❌ **Chưa làm**: Feature chưa được bắt đầu
@@ -1103,27 +1103,27 @@
    - **P1**: Priority 1 - High (important features)
    - **P2**: Priority 2 - Medium (nice to have)
 
-    ### Tiến độ Tổng Thể:
-    - **Backend Core**: ~95% (Auth hoàn thành ✅, Error handling hoàn thành ✅)
-    - **Frontend Core**: ~60% (UI tạo xong, chưa kết nối API)
-    - **New Features (Auth + QR)**: **50%** (Auth backend ✅✅ hoàn thành, QR chưa làm)
-    - **Testing & Deployment**: ~50% (Docker sẵn, cần test kỹ)
-    - **Tổng Overall**: **~60%** - Đã hoàn thành 60% work, còn 40% phía trước
+### Tiến độ Tổng Thể:
+  - **Backend Core**: ~95% (Auth hoàn thành ✅, Error handling hoàn thành ✅)
+  - **Frontend Core**: ~60% (UI tạo xong, chưa kết nối API)
+  - **New Features (Auth + QR)**: **50%** (Auth backend ✅✅ hoàn thành, QR chưa làm)
+  - **Testing & Deployment**: ~50% (Docker sẵn, cần test kỹ)
+  - **Tổng Overall**: **~60%** - Đã hoàn thành 60% work, còn 40% phía trước
 
-    ### Công Việc Ưu Tiên (Tuần Tiếp Theo):
-    1. **[P1 - HIGH]** ✅ **Authentication (Register/Login/JWT) - HMHieu DONE**
-    2. **[P1 - HIGH]** ✅ **Error Handling & Validation - HMHieu DONE**
-    3. **[P1 - HIGH]** Implement QR Code Generation (NMHieu)
-    4. **[P1 - MEDIUM]** Connect Frontend to Backend APIs (shorten, redirect, stats, auth)
-    5. **[P2 - MEDIUM]** End-to-end Testing (Postman, manual QA)
-    6. **[P2 - LOW]** Load Testing & Performance Optimization
+### Công Việc Ưu Tiên (Tuần Tiếp Theo):
+1. **[P1 - HIGH]** ✅ **Authentication (Register/Login/JWT) - HMHieu DONE**
+2. **[P1 - HIGH]** ✅ **Error Handling & Validation - HMHieu DONE**
+3. **[P1 - HIGH]** Implement QR Code Generation (NMHieu)
+4. **[P1 - MEDIUM]** Connect Frontend to Backend APIs (shorten, redirect, stats, auth)
+5. **[P2 - MEDIUM]** End-to-end Testing (Postman, manual QA)
+6. **[P2 - LOW]** Load Testing & Performance Optimization
 
 ## 24. Quick Reference & Daily Implementation
 
-    ### Current Status Summary (02/05/2026)
-    - **Overall**: 60% hoàn thành | **Backend**: 95% | **Frontend**: 60% | **New Features (Auth+QR)**: 50%
-    - **Phần làm xong**: Shorten API ✅, Redirect ✅, Analytics ✅, Database ✅, Docker ✅, **Authentication Backend ✅ (HMHieu)**, **Error Handling ✅ (HMHieu)**
-    - **Phần cần làm**: QR Code, Frontend-Backend integration, Frontend Auth UI, Testing
+### Current Status Summary (02/05/2026)
+- **Overall**: 60% hoàn thành | **Backend**: 95% | **Frontend**: 60% | **New Features (Auth+QR)**: 50%
+- **Phần làm xong**: Shorten API ✅, Redirect ✅, Analytics ✅, Database ✅, Docker ✅, **Authentication Backend ✅ (HMHieu)**, **Error Handling ✅ (HMHieu)**
+- **Phần cần làm**: QR Code, Frontend-Backend integration, Frontend Auth UI, Testing
 
 ### Week 1-2 Roadmap (7-10 ngày)
    ```
@@ -1244,7 +1244,7 @@
    Day 10: Ready for submission
    ```
 
-    ## 24. Project Structure
+  ## 24. Project Structure
   Dự án được tổ chức theo mô hình **monorepo**, tách biệt rõ ràng giữa **Frontend** và **Backend**, giúp dễ phát triển, bảo trì và mở rộng.
 
   ```bash
