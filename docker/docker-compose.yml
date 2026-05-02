@@ -1,23 +1,35 @@
+version: '3.8'
+
 services:
+  # Backend + Frontend served by Express
   app:
     build:
-      context: ../backend
-      dockerfile: ../docker/Dockerfile
+      context: ..
+      dockerfile: ./docker/Dockerfile
     ports:
       - "3000:3000"
     environment:
+      NODE_ENV: production
+      PORT: 3000
       DATABASE_URL: mysql://user:password@db:3306/url_shortener
     depends_on:
-      - db
-    volumes:
-      - ../backend:/app
-      - /app/node_modules
-    command: npm run dev
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
+  # MySQL Database
   db:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
-    restart: always
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: url_shortener
@@ -27,6 +39,18 @@ services:
       - "3307:3306"
     volumes:
       - db-data:/var/lib/mysql
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   db-data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge

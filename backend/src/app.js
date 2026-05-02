@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const { prisma } = require("./utils/prisma");
 const { getRedisClient } = require("./utils/redis");
 const urlRoutes = require("./routes/urlRoutes");
@@ -7,6 +8,10 @@ const app = express();
 
 // Middleware để đọc dữ liệu JSON từ request body
 app.use(express.json());
+
+// Serve static frontend files from dist folder
+const frontendPath = path.resolve("/app/frontend/dist");
+app.use(express.static(frontendPath));
 
 /**
  * Route: Kiểm tra sức khỏe hệ thống (Health Check)
@@ -47,5 +52,13 @@ app.get("/health", async (req, res) => {
  * Mình giữ /api để đồng nhất với cấu trúc cũ của bạn
  */
 app.use("/api", urlRoutes);
+
+/**
+ * Fallback route để phục vụ React SPA
+ * Tất cả routes không khớp với /api sẽ được redirect tới index.html
+ */
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
 
 module.exports = app;
