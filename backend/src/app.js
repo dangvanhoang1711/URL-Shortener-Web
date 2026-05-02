@@ -10,7 +10,6 @@ app.use(express.json());
 
 /**
  * Route: Kiểm tra sức khỏe hệ thống (Health Check)
- * Giúp kiểm tra kết nối Database và Redis có ổn định không
  */
 app.get("/health", async (req, res) => {
   const result = {
@@ -19,7 +18,6 @@ app.get("/health", async (req, res) => {
     cache: "unknown"
   };
 
-  // Kiểm tra kết nối Database (Prisma)
   try {
     await prisma.$queryRaw`SELECT 1`;
     result.database = "connected";
@@ -28,7 +26,6 @@ app.get("/health", async (req, res) => {
     result.database = "disconnected";
   }
 
-  // Kiểm tra kết nối Cache (Redis)
   try {
     const redis = await getRedisClient();
     if (redis) {
@@ -47,6 +44,7 @@ app.get("/health", async (req, res) => {
 
 /**
  * Các Routes logic chính của ứng dụng
+ * Mình giữ /api để đồng nhất với cấu trúc cũ của bạn
  */
 app.use("/api", urlRoutes);
 
