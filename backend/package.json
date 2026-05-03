@@ -10,8 +10,12 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
     "db:seed": "node prisma/seed.js",
+    "db:explain": "node scripts/explain-queries.js",
+    "test": "node --test tests/*.test.js",
+    "test:unit": "node --test tests/*.test.js",
     "test:collision": "node scripts/collision-test.js",
-    "benchmark:lookup": "node scripts/lookup-benchmark.js"
+    "benchmark:lookup": "node scripts/lookup-benchmark.js",
+    "test:load": "k6 run tests/k6/load-test.js"
   },
   "dependencies": {
     "@prisma/client": "^6.6.0",
