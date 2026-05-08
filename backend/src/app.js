@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 });
 
 // Serve static frontend files from dist folder
-const frontendPath = path.resolve("/app/frontend/dist");
+const frontendPath = path.resolve("/app/public");
 app.use(express.static(frontendPath));
 
 /**
