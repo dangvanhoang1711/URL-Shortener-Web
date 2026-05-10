@@ -3,9 +3,23 @@ const { getRedisClient } = require("../utils/redis");
 
 const cachePrefix = "short-url:";
 const cacheTtlSeconds = Number(process.env.CACHE_TTL_SECONDS || 3600);
+const urlLookupSelect = Object.freeze({
+  id: true,
+  originalUrl: true,
+  shortCode: true,
+  clickCount: true,
+  expiresAt: true
+});
 
 function getCacheKey(shortCode) {
   return `${cachePrefix}${shortCode}`;
+}
+
+async function findUrlByShortCode(shortCode) {
+  return prisma.url.findUnique({
+    where: { shortCode },
+    select: urlLookupSelect
+  });
 }
 
 async function saveUrl(data) {
@@ -31,16 +45,7 @@ async function getUrlByShortCode(shortCode) {
     }
   }
 
-  const url = await prisma.url.findUnique({
-    where: { shortCode },
-    select: {
-      id: true,
-      originalUrl: true,
-      shortCode: true,
-      clickCount: true,
-      expiresAt: true
-    }
-  });
+  const url = await findUrlByShortCode(shortCode);
 
   if (url && redis) {
     await redis.set(getCacheKey(shortCode), JSON.stringify(url), {
@@ -104,6 +109,7 @@ async function warmUrlCache(limit = 100) {
 
 module.exports = {
   saveUrl,
+  findUrlByShortCode,
   getUrlByShortCode,
   recordClick,
   warmUrlCache
