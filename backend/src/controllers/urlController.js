@@ -2,17 +2,19 @@ const shortenerService = require("../services/shortenerService");
 
 async function shortenUrl(req, res) {
   try {
-    const { url } = req.body;
+    const { originalUrl } = req.body;
 
-    if (!url) {
-      return res.status(400).json({ error: "URL is required" });
+    if (!originalUrl) {
+      return res.status(400).json({ error: "originalUrl is required" });
     }
 
-    const result = await shortenerService.createShortUrl(url);
+    const result = await shortenerService.createShortUrl(originalUrl);
 
     return res.json({
-      short_url: `http://localhost:3001/${result.shortCode}`,
-      original_url: result.originalUrl,
+      id: result.id,
+      shortCode: result.shortCode,
+      originalUrl: result.originalUrl,
+      clickCount: result.clickCount
     });
   } catch (err) {
     console.error(err);
