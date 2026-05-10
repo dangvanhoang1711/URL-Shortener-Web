@@ -14,6 +14,8 @@ async function main() {
     }
   });
 
+  const qrPlaceholder = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4////fwAJ+wP9KobjigAAAABJRU5ErkJggg==";
+
   const demoUrls = [
     {
       originalUrl: "https://www.google.com",
@@ -27,13 +29,28 @@ async function main() {
     }
   ];
 
+  const createdUrls = [];
+
   for (const item of demoUrls) {
-    await prisma.url.upsert({
+    const url = await prisma.url.upsert({
       where: { shortCode: item.shortCode },
       update: {},
       create: {
         ...item,
         userId: demoUser.id
+      }
+    });
+
+    createdUrls.push(url);
+  }
+
+  if (createdUrls[0]) {
+    await prisma.qrCode.upsert({
+      where: { urlId: createdUrls[0].id },
+      update: {},
+      create: {
+        urlId: createdUrls[0].id,
+        imageData: qrPlaceholder
       }
     });
   }

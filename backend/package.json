@@ -10,14 +10,21 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
     "db:seed": "node prisma/seed.js",
+    "db:explain": "node scripts/explain-queries.js",
+    "test": "node --test tests/*.test.js",
+    "test:unit": "node --test tests/*.test.js",
     "test:collision": "node scripts/collision-test.js",
-    "benchmark:lookup": "node scripts/lookup-benchmark.js"
+    "benchmark:lookup": "node scripts/lookup-benchmark.js",
+    "test:load": "k6 run tests/k6/load-test.js"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "express": "^4.21.2",
     "qrcode": "^1.5.4",
+    "express-validator": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
     "redis": "^5.1.0"
   },
   "devDependencies": {

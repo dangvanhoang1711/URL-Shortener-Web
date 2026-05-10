@@ -32,11 +32,28 @@ model Url {
 
   user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
   clicks Click[]
+  qrCode QrCode?
 
   @@index([createdAt])
   @@index([userId, createdAt])
   @@index([clickCount])
+  @@index([clickCount, createdAt])
+  @@index([lastClickedAt])
   @@map("urls")
+}
+
+model QrCode {
+  id          Int      @id @default(autoincrement())
+  urlId       Int      @unique
+  imageData   String   @db.MediumText
+  contentType String   @default("image/png") @db.VarChar(50)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  url Url @relation(fields: [urlId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt])
+  @@map("qr_codes")
 }
 
 model Click {

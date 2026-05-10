@@ -1,5 +1,5 @@
 const prisma = require("../config/prisma");
-const redis = require("../config/redis");
+const redis = require("../utils/redis");
 
 /**
  * GET ORIGINAL URL (Redis → DB)

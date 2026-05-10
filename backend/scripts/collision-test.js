@@ -1,5 +1,15 @@
 const alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+function normalizeSampleSize(value) {
+  const parsedValue = Number.parseInt(value, 10);
+
+  if (!Number.isFinite(parsedValue) || parsedValue <= 0) {
+    return 100000;
+  }
+
+  return parsedValue;
+}
+
 function encodeBase62(value) {
   if (value === 0) {
     return alphabet[0];
@@ -40,7 +50,16 @@ function runCollisionTest(sampleSize) {
   };
 }
 
-const sampleSize = Number(process.argv[2] || 100000);
-const result = runCollisionTest(sampleSize);
+if (require.main === module) {
+  const sampleSize = normalizeSampleSize(process.argv[2]);
+  const result = runCollisionTest(sampleSize);
 
-console.log(JSON.stringify(result, null, 2));
+  console.log(JSON.stringify(result, null, 2));
+}
+
+module.exports = {
+  alphabet,
+  encodeBase62,
+  normalizeSampleSize,
+  runCollisionTest
+};
