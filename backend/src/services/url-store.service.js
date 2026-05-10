@@ -1,4 +1,4 @@
-const { prisma } = require("../utils/prisma");
+const prisma = require("../config/prisma");
 const { getRedisClient } = require("../utils/redis");
 
 const cachePrefix = "short-url:";

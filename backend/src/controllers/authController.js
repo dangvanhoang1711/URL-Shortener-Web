@@ -48,9 +48,7 @@ exports.login = asyncHandler(async (req, res) => {
     const result = await AuthService.loginUser(email, password);
 
     return res.status(200).json({
-      message: 'Login successful',
-      token: result.token,
-      user: result.user
+      ...result
     });
   } catch (error) {
     throw new AuthenticationError(error.message || 'Invalid credentials');
@@ -71,7 +69,6 @@ exports.getCurrentUser = asyncHandler(async (req, res) => {
     const user = await AuthService.getUserById(req.user.userId);
 
     return res.status(200).json({
-      message: 'User information retrieved successfully',
       user
     });
   } catch (error) {

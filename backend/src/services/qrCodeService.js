@@ -13,19 +13,19 @@ exports.generateQRForURL = async (urlId, urlToEncode, options = {}) => {
     qrData = await generateQR(urlToEncode, { format: 'image/png', size });
   }
 
-  const qrRecord = await prisma.qrCode.upsert({
+  const qrRecord = await prisma.qRCode.upsert({
     where: { urlId },
     update: {
       qrData,
       format,
-      size,
+      size: Number(size),
       updatedAt: new Date()
     },
     create: {
       urlId,
       qrData,
       format,
-      size
+      size: Number(size)
     }
   });
 
@@ -54,7 +54,7 @@ exports.getQRCode = async (urlId, format = 'png') => {
     }
   }
 
-  const qrRecord = await prisma.qrCode.findUnique({
+  const qrRecord = await prisma.qRCode.findUnique({
     where: { urlId }
   });
 

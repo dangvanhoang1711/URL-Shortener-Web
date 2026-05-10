@@ -1,5 +1,5 @@
 const { generateQRForURL, getQRCode } = require("../services/qrCodeService");
-const { prisma } = require("../utils/prisma");
+const prisma = require("../config/prisma");
 
 /**
  * Generate QR code for a short URL
@@ -12,7 +12,7 @@ exports.generateQRCode = async (req, res) => {
 
     // Find the URL record by short_code
     const urlRecord = await prisma.url.findUnique({
-      where: { shortCode }
+      where: { shortCode: short_code }
     });
 
     if (!urlRecord) {
@@ -57,7 +57,7 @@ exports.getQRCode = async (req, res) => {
 
     // Find the URL record by short_code
     const urlRecord = await prisma.url.findUnique({
-      where: { shortCode }
+      where: { shortCode: short_code }
     });
 
     if (!urlRecord) {
@@ -105,7 +105,7 @@ exports.downloadQRCode = async (req, res) => {
 
     // Find the URL record by short_code
     const urlRecord = await prisma.url.findUnique({
-      where: { shortCode }
+      where: { shortCode: short_code }
     });
 
     if (!urlRecord) {

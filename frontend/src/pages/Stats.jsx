@@ -28,35 +28,17 @@ export default function Stats() {
   }, [shortCode]);
 
   const getChartData = () => {
-    if (!stats || !stats.clicks) return null;
-
-    const last7Days = [];
-    const clicksPerDay = {};
-
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date();
-      d.setDate(d.getDate() - i);
-      const key = d.toISOString().split('T')[0];
-      last7Days.push(key);
-      clicksPerDay[key] = 0;
-    }
-
-    stats.clicks.forEach(c => {
-      const key = new Date(c.time).toISOString().split('T')[0];
-      if (clicksPerDay[key] !== undefined) {
-        clicksPerDay[key]++;
-      }
-    });
+    if (!stats || !stats.dailyClicks) return null;
 
     return {
-      labels: last7Days.map(d => {
-        const date = new Date(d);
+      labels: stats.dailyClicks.map(d => {
+        const date = new Date(d.date);
         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       }),
       datasets: [
         {
           label: 'Clicks',
-          data: last7Days.map(d => clicksPerDay[d]),
+          data: stats.dailyClicks.map(d => d.clicks),
           fill: true,
           backgroundColor: 'rgba(99, 102, 241, 0.1)',
           borderColor: 'rgba(99, 102, 241, 1)',
@@ -156,15 +138,15 @@ export default function Stats() {
         </div>
         <div className="col-md-4">
           <div className="card border-0 shadow-sm rounded-4 p-4 text-center">
-            <div className="display-5 fw-bold text-success">{stats.clicks?.length || 0}</div>
+            <div className="display-5 fw-bold text-success">{stats.recentClicks?.length || 0}</div>
             <div className="text-muted small mt-1">Recent Clicks</div>
           </div>
         </div>
         <div className="col-md-4">
           <div className="card border-0 shadow-sm rounded-4 p-4 text-center">
             <div className="display-5 fw-bold text-info">
-              {stats.clicks && stats.clicks.length > 0
-                ? new Date(stats.clicks[0].time).toLocaleDateString()
+              {stats.recentClicks && stats.recentClicks.length > 0
+                ? new Date(stats.recentClicks[0].time).toLocaleDateString()
                 : 'N/A'}
             </div>
             <div className="text-muted small mt-1">Last Click</div>
@@ -195,8 +177,8 @@ export default function Stats() {
               </tr>
             </thead>
             <tbody>
-              {stats.clicks && stats.clicks.length > 0 ? (
-                stats.clicks.map((click, idx) => (
+              {stats.recentClicks && stats.recentClicks.length > 0 ? (
+                stats.recentClicks.map((click, idx) => (
                   <tr key={idx}>
                     <td className="py-3 ps-4 small">
                       {new Date(click.time).toLocaleString()}

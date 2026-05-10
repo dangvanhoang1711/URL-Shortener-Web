@@ -17,12 +17,17 @@ export const getStats = async (shortCode) => {
 
 export const getQRCode = async (shortCode, format = 'png') => {
   const response = await api.get(`/urls/${shortCode}/qr-code?format=${format}`);
-  return response.data;
+  return response.data.data;
 };
 
 export const downloadQRCode = async (shortCode, format = 'png', size = 300) => {
   const response = await api.get(`/urls/${shortCode}/qr-code/download?format=${format}&size=${size}`, {
     responseType: 'blob',
   });
+  return response.data;
+};
+
+export const deleteLink = async (id) => {
+  const response = await api.delete(`/urls/links/${id}`);
   return response.data;
 };
