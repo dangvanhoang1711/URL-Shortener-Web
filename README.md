@@ -39,7 +39,7 @@ Hệ thống **URL Shortener (giống Bitly)** cho phép:
 
 ```mermaid
 flowchart LR
-    User[👤 User] -->|Request| Frontend["⚛️ React (Vite)"]
+    User[👤 User] -->|Request| Frontend["⚛️ React (Bootstrap 5)"]
     Frontend -->|API| Backend["🚀 Express (Node.js)"]
     Backend --> DB[(🗄️ MySQL + Prisma)]
     Backend --> Cache[(⚡ Redis)]
