@@ -1,5 +1,6 @@
 ﻿import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './context/AuthContext'; // Import hook check login
+import { useAuth } from './context/AuthContext';
+import ProtectedRoute from './hooks/ProtectedRoute';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ShortenForm from './components/ShortenForm';
@@ -7,9 +8,23 @@ import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import Footer from './components/Footer';
 import QrForm from './components/QrForm';
+import Dashboard from './pages/Dashboard';
+import Stats from './pages/Stats';
 
 function App() {
-  const { user } = useAuth(); // Lấy thông tin user hiện tại
+  const { loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="d-flex flex-column min-vh-100 bg-light">
+        <div className="d-flex justify-content-center align-items-center flex-grow-1">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="d-flex flex-column min-vh-100 bg-light">
@@ -23,7 +38,23 @@ function App() {
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignupForm />} />
 
-            {/* Thêm Route dự phòng: Nếu gõ bừa URL thì quay về Home */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/stats/:shortCode"
+              element={
+                <ProtectedRoute>
+                  <Stats />
+                </ProtectedRoute>
+              }
+            />
+
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>

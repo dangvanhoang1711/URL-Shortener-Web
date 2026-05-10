@@ -1,12 +1,28 @@
-import axios from 'axios';
-const API_URL = 'http://localhost:3000/api/urls';
+import api from './api';
 
 export const shortenUrl = async (originalUrl) => {
-  const response = await axios.post(`${API_URL}/shorten`, { originalUrl });
+  const response = await api.post('/urls/shorten', { originalUrl });
   return response.data;
 };
 
-export const getHistory = async (userId) => {
-  const response = await axios.get(`${API_URL}/history/${userId}`);
+export const getHistory = async () => {
+  const response = await api.get('/urls/history');
+  return response.data;
+};
+
+export const getStats = async (shortCode) => {
+  const response = await api.get(`/urls/${shortCode}/stats`);
+  return response.data;
+};
+
+export const getQRCode = async (shortCode, format = 'png') => {
+  const response = await api.get(`/urls/${shortCode}/qr-code?format=${format}`);
+  return response.data;
+};
+
+export const downloadQRCode = async (shortCode, format = 'png', size = 300) => {
+  const response = await api.get(`/urls/${shortCode}/qr-code/download?format=${format}&size=${size}`, {
+    responseType: 'blob',
+  });
   return response.data;
 };

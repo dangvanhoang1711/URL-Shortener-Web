@@ -12,7 +12,7 @@ exports.generateQRCode = async (req, res) => {
 
     // Find the URL record by short_code
     const urlRecord = await prisma.url.findUnique({
-      where: { short_code }
+      where: { shortCode }
     });
 
     if (!urlRecord) {
@@ -57,7 +57,7 @@ exports.getQRCode = async (req, res) => {
 
     // Find the URL record by short_code
     const urlRecord = await prisma.url.findUnique({
-      where: { short_code }
+      where: { shortCode }
     });
 
     if (!urlRecord) {
@@ -105,7 +105,7 @@ exports.downloadQRCode = async (req, res) => {
 
     // Find the URL record by short_code
     const urlRecord = await prisma.url.findUnique({
-      where: { short_code }
+      where: { shortCode }
     });
 
     if (!urlRecord) {

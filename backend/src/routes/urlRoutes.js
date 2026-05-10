@@ -3,16 +3,17 @@ const router = express.Router();
 const urlController = require("../controllers/urlController");
 const redirectController = require("../controllers/redirectController");
 const qrController = require("../controllers/qrCodeController");
+const { authMiddleware } = require("../middlewares/authMiddleware");
 
-// Route tạo link rút gọn (Của nhánh feature/hmhieu-test)
 router.post("/shorten", urlController.shortenUrl);
+router.get("/history", authMiddleware, urlController.getHistory);
 
-// Route chuyển hướng link - NMHieu's responsibility (Của nhánh MinhHieu)
+router.post("/:short_code/qr-code", qrController.generateQRCode);
+router.get("/:short_code/qr-code", qrController.getQRCode);
+router.get("/:short_code/qr-code/download", qrController.downloadQRCode);
+
+router.get("/:short_code/stats", urlController.getStats);
+
 router.get("/:short_code", redirectController.redirect);
-
-// QR Code routes - NMHieu's responsibility
-router.post("/urls/:short_code/qr-code", qrController.generateQRCode);
-router.get("/urls/:short_code/qr-code", qrController.getQRCode);
-router.get("/urls/:short_code/qr-code/download", qrController.downloadQRCode);
 
 module.exports = router;
