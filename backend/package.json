@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
+    "prisma:validate": "DATABASE_URL=${DATABASE_URL:-mysql://root:password@localhost:3306/url_shortener} prisma validate",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
@@ -26,8 +27,5 @@
   "devDependencies": {
     "nodemon": "^3.1.9",
     "prisma": "^6.6.0"
-  },
-  "prisma": {
-    "seed": "node prisma/seed.js"
   }
 }
