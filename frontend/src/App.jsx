@@ -1,5 +1,6 @@
-﻿import { Routes, Route, Navigate } from 'react-router-dom';
+﻿import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
+import { useEffect } from 'react';
 import ProtectedRoute from './hooks/ProtectedRoute';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -10,6 +11,16 @@ import Footer from './components/Footer';
 import QrForm from './components/QrForm';
 import Dashboard from './pages/Dashboard';
 import Stats from './pages/Stats';
+
+function RedirectHandler() {
+  const { shortCode } = useParams();
+  useEffect(() => {
+    if (shortCode) {
+      window.location.replace(`http://localhost:3000/api/urls/${shortCode}`);
+    }
+  }, [shortCode]);
+  return null;
+}
 
 function App() {
   const { loading } = useAuth();
@@ -55,6 +66,7 @@ function App() {
               }
             />
 
+            <Route path="/:shortCode" element={<RedirectHandler />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>

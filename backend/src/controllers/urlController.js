@@ -1,7 +1,14 @@
 const shortenerService = require("../services/shortenerService");
 const analyticsService = require("../services/analyticsService");
 
-const URL_REGEX = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/i;
+function isValidHttpUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
 
 async function shortenUrl(req, res) {
   try {
@@ -12,11 +19,15 @@ async function shortenUrl(req, res) {
       return res.status(400).json({ error: "originalUrl is required" });
     }
 
-    if (!URL_REGEX.test(originalUrl)) {
+    let normUrl = originalUrl.trim();
+    if (!/^https?:\/\//i.test(normUrl)) {
+      normUrl = "https://" + normUrl;
+    }
+    if (!isValidHttpUrl(normUrl)) {
       return res.status(400).json({ error: "Invalid URL format" });
     }
 
-    const result = await shortenerService.createShortUrl(originalUrl, userId, title || null);
+    const result = await shortenerService.createShortUrl(normUrl, userId, title || null);
 
     return res.json({
       id: result.id,
