@@ -8,13 +8,10 @@ const {
   AppError,
   ValidationError,
   AuthenticationError,
-  AuthorizationError,
   NotFoundError,
   ConflictError,
   RateLimitError,
-  UnprocessableEntityError,
   DatabaseError,
-  ExternalServiceError
 } = require('../utils/customErrors');
 
 /**
@@ -193,21 +190,6 @@ const errorHandler = (err, req, res, next) => {
 };
 
 /**
- * 404 Not Found Handler
- * Middleware này phải được gọi cuối cùng
- */
-const notFoundHandler = (req, res, next) => {
-  const error = new NotFoundError('Endpoint', `${req.method} ${req.path}`);
-  res.status(error.statusCode).json({
-    error: error.errorCode,
-    message: error.message,
-    timestamp: error.timestamp,
-    path: req.path,
-    method: req.method
-  });
-};
-
-/**
  * Async error wrapper
  * Dùng để wrap các async route handlers để catch errors
  */
@@ -219,8 +201,9 @@ const asyncHandler = (fn) => (req, res, next) => {
  * Validation error handler
  * Dùng sau express-validator checks
  */
+const { validationResult } = require('express-validator');
+
 const handleValidationErrors = (req, res, next) => {
-  const { validationResult } = require('express-validator');
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const firstError = errors.array()[0];
@@ -240,20 +223,8 @@ const handleValidationErrors = (req, res, next) => {
 
 module.exports = {
   errorHandler,
-  notFoundHandler,
   asyncHandler,
   handleValidationErrors,
   logger,
-  // Export error classes for use in controllers
-  AppError,
-  ValidationError,
-  AuthenticationError,
-  AuthorizationError,
-  NotFoundError,
-  ConflictError,
-  RateLimitError,
-  UnprocessableEntityError,
-  DatabaseError,
-  ExternalServiceError
 };
 

@@ -8,7 +8,6 @@ const { authMiddleware } = require("../middlewares/authMiddleware");
 router.post("/shorten", authMiddleware, urlController.shortenUrl);
 router.get("/history", authMiddleware, urlController.getHistory);
 
-router.get("/links", authMiddleware, urlController.getHistory);
 router.get("/links/:id", authMiddleware, urlController.getLinkById);
 router.delete("/links/:id", authMiddleware, urlController.deleteLink);
 

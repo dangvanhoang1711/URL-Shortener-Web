@@ -1,11 +1,12 @@
 const AuthService = require('../services/authService');
+const { asyncHandler } = require('../middlewares/errorHandler');
+const { sendWelcomeEmail } = require('../utils/email');
 const {
-  asyncHandler,
   ValidationError,
   AuthenticationError,
   NotFoundError,
   ConflictError
-} = require('../middlewares/errorHandler');
+} = require('../utils/customErrors');
 
 /**
  * Đăng ký người dùng mới
@@ -17,6 +18,10 @@ exports.register = asyncHandler(async (req, res) => {
     const { email, password, confirmPassword } = req.body;
 
     const user = await AuthService.registerUser(email, password, confirmPassword);
+
+    sendWelcomeEmail(email).catch((err) => {
+      console.error('[Register] Welcome email failed:', err.message);
+    });
 
     return res.status(201).json({
       message: 'User registered successfully',

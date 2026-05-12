@@ -21,7 +21,7 @@ FROM node:20-alpine
 WORKDIR /app
 
 # Thêm bash vì file entrypoint.sh của bạn dùng bash logic
-RUN apk add --no-cache dumb-init curl mysql-client bash
+RUN apk add --no-cache dumb-init curl mysql-client bash ca-certificates
 
 # Copy backend
 COPY --from=backend-builder /backend/node_modules ./node_modules

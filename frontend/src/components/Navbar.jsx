@@ -76,6 +76,28 @@ export default function Navbar() {
                 Home
               </button>
             </li>
+            <li className="nav-item">
+              <button
+                onClick={() => navigate('/features')}
+                className="nav-link btn btn-link fw-semibold text-dark border-0"
+                style={{ cursor: 'pointer', transition: 'color 0.3s ease' }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#0d6efd')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '')}
+              >
+                Features
+              </button>
+            </li>
+            <li className="nav-item">
+              <button
+                onClick={() => navigate('/contact')}
+                className="nav-link btn btn-link fw-semibold text-dark border-0"
+                style={{ cursor: 'pointer', transition: 'color 0.3s ease' }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#0d6efd')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '')}
+              >
+                Contact us
+              </button>
+            </li>
             {user && (
               <>
                 <li className="nav-item" style={{ animation: 'fadeInUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both' }}>
@@ -87,17 +109,6 @@ export default function Navbar() {
                     onMouseLeave={(e) => (e.currentTarget.style.color = '')}
                   >
                     Dashboard
-                  </button>
-                </li>
-                <li className="nav-item" style={{ animation: 'fadeInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both' }}>
-                  <button
-                    onClick={() => navigate('/qr-generator')}
-                    className="nav-link btn btn-link fw-semibold text-dark border-0"
-                    style={{ cursor: 'pointer', transition: 'color 0.3s ease' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = '#0d6efd')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = '')}
-                  >
-                    QR Generator
                   </button>
                 </li>
               </>

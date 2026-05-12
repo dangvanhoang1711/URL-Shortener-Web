@@ -5,11 +5,11 @@ export default function Hero() {
   const { user } = useAuth(); // Lấy thông tin user từ Context
   const navigate = useNavigate();
 
-  const handleGetStarted = (e) => {
-    // Nếu chưa có user (chưa đăng nhập)
+  const handleGetStarted = () => {
     if (!user) {
-      e.preventDefault(); // Ngăn hành động chuyển đến trang /shorten của thẻ Link
-      navigate('/login'); // Chuyển hướng sang trang login
+      navigate('/login');
+    } else {
+      navigate('/dashboard');
     }
   };
 
@@ -26,15 +26,14 @@ export default function Hero() {
         
         <div className="d-flex gap-3 justify-content-center justify-content-lg-start">
           {/* Thay đổi: Thêm sự kiện onClick để kiểm tra trước khi chuyển trang */}
-          <Link 
-            to="/shorten" 
+          <button
             onClick={handleGetStarted}
             className="btn btn-primary btn-lg px-5 py-3 rounded-pill fw-bold shadow-sm"
           >
             Get Started for Free
-          </Link>
+          </button>
           
-          <button className="btn btn-outline-dark btn-lg px-5 py-3 rounded-pill fw-bold">
+          <button onClick={() => navigate('/features')} className="btn btn-outline-dark btn-lg px-5 py-3 rounded-pill fw-bold">
             Learn More
           </button>
         </div>

@@ -126,7 +126,7 @@ export default function LoginForm() {
               </div>
 
               <div className="text-end mb-4" style={{ animation: 'fadeInUp 0.5s 0.35s cubic-bezier(0.22, 1, 0.36, 1) both' }}>
-                <a href="#" className="text-primary small text-decoration-none fw-semibold">Forgot password?</a>
+                <Link to="/forgot-password" className="text-primary small text-decoration-none fw-semibold">Forgot password?</Link>
               </div>
 
               <button

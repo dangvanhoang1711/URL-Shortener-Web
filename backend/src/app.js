@@ -1,13 +1,16 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const prisma = require("./config/prisma");
 const { getRedisClient } = require("./utils/redis");
 const urlRoutes = require("./routes/urlRoutes");
 const authRoutes = require("./routes/authRoutes");
-const { errorHandler, notFoundHandler } = require("./middlewares/errorHandler");
+const contactRoutes = require("./routes/contactRoutes");
+const passwordResetRoutes = require("./routes/passwordResetRoutes");
+const { errorHandler } = require("./middlewares/errorHandler");
 
 const app = express();
 
@@ -22,7 +25,9 @@ app.use((req, res, next) => {
   next();
 });
 
-const frontendPath = path.resolve("/app/public");
+const frontendPath = fs.existsSync('/app/public')
+  ? '/app/public'
+  : path.join(__dirname, '../../frontend/dist');
 
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 200, standardHeaders: true, legacyHeaders: false, message: { error: 'Too many requests' } }));
 app.use("/api/auth", rateLimit({ windowMs: 15 * 60 * 1000, max: 20, standardHeaders: true, legacyHeaders: false, message: { error: 'Too many auth attempts' } }));
@@ -53,14 +58,23 @@ app.get("/health", async (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/urls", urlRoutes);
+app.use("/api", contactRoutes);
+app.use("/api", passwordResetRoutes);
 
-app.use(express.static(frontendPath));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(frontendPath, "index.html"));
+app.use('/api', (req, res) => {
+  res.status(404).json({
+    error: 'NOT_FOUND',
+    message: `API endpoint ${req.method} ${req.path} not found`
+  });
 });
 
-app.use(notFoundHandler);
+if (fs.existsSync(frontendPath)) {
+  app.use(express.static(frontendPath));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
+  });
+}
+
 app.use(errorHandler);
 
 module.exports = app;
