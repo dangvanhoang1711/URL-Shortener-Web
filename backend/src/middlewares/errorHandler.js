@@ -99,20 +99,16 @@ const handleValidationError = (error) => {
  */
 const formatErrorResponse = (err, req, isDevelopment = false) => {
   const response = {
-    error: err.errorCode || err.name || 'Error',
+    error: err.errorCode || 'Error',
     message: err.message || 'Internal Server Error',
-    statusCode: err.statusCode || 500,
     timestamp: new Date().toISOString()
   };
 
-  // Development mode - add extra details
+  // Development mode - add extra details (nhưng vẫn không lộ thông tin nhạy cảm)
   if (isDevelopment) {
     response.path = req.path;
     response.method = req.method;
-    response.details = err.details || null;
-    if (err.stack) {
-      response.stack = err.stack.split('\n');
-    }
+    // Không thêm stack trace để tránh lộ cấu trúc code
   }
 
   // Rate limit - add retry-after
@@ -211,10 +207,10 @@ const handleValidationErrors = (req, res, next) => {
       field: firstError.param,
       message: firstError.msg
     });
+    // Không trả về details để tránh lộ thông tin về cấu trúc validation
     return res.status(error.statusCode).json({
       error: error.errorCode,
       message: error.message,
-      details: error.details,
       timestamp: new Date().toISOString()
     });
   }

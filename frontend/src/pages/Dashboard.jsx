@@ -81,8 +81,8 @@ export default function Dashboard() {
     if (!deleteModal) return;
     setDeleting(true);
     try {
-      await apiDeleteLink(deleteModal.id);
-      setUrls(prev => prev.filter(u => u.id !== deleteModal.id));
+      await apiDeleteLink(deleteModal.shortCode);
+      setUrls(prev => prev.filter(u => u.shortCode !== deleteModal.shortCode));
       setDeleteModal(null);
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to delete link');
@@ -173,7 +173,7 @@ export default function Dashboard() {
               <thead>
                 <tr>
                   <th className="border-0 py-3 ps-4" style={{ fontSize: '0.75rem', letterSpacing: '0.5px', textTransform: 'uppercase', fontWeight: 600, color: '#495057', whiteSpace: 'nowrap', backgroundColor: '#ffffff', borderBottom: '2px solid #e9ecef' }}>Short Link</th>
-                  <th className="border-0 py-3 d-none d-lg-table-cell" style={{ fontSize: '0.75rem', letterSpacing: '0.5px', textTransform: 'uppercase', fontWeight: 600, color: '#495057', width: '35%', backgroundColor: '#ffffff', borderBottom: '2px solid #e9ecef' }}>Original URL</th>
+                  <th className="border-0 py-3 d-none d-lg-table-cell" style={{ fontSize: '0.75rem', letterSpacing: '0.5px', textTransform: 'uppercase', fontWeight: 600, color: '#495057', width: '35%', backgroundColor: '#ffffff', borderBottom: '2px solid #e9ecef' }}>Domain</th>
                   <th className="border-0 py-3 text-center" style={{ fontSize: '0.75rem', letterSpacing: '0.5px', textTransform: 'uppercase', fontWeight: 600, color: '#495057', width: '80px', backgroundColor: '#ffffff', borderBottom: '2px solid #e9ecef' }}>Clicks</th>
                   <th className="border-0 py-3 text-center d-none d-md-table-cell" style={{ fontSize: '0.75rem', letterSpacing: '0.5px', textTransform: 'uppercase', fontWeight: 600, color: '#495057', width: '120px', backgroundColor: '#ffffff', borderBottom: '2px solid #e9ecef' }}>Created</th>
                   <th className="border-0 py-3 text-center pe-4" style={{ fontSize: '0.75rem', letterSpacing: '0.5px', textTransform: 'uppercase', fontWeight: 600, color: '#495057', width: '200px', backgroundColor: '#ffffff', borderBottom: '2px solid #e9ecef' }}>Actions</th>
@@ -182,7 +182,7 @@ export default function Dashboard() {
               <tbody>
                 {urls.map((item, index) => (
                   <tr
-                    key={item.id}
+                    key={item.shortCode}
                     style={{
                       animation: 'slideUpList 0.4s cubic-bezier(0.22, 1, 0.36, 1) both',
                       animationDelay: `${index * 0.05}s`,
@@ -206,8 +206,8 @@ export default function Dashboard() {
                       </a>
                     </td>
                     <td className="py-3 d-none d-lg-table-cell" style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #f0f2f5' }}>
-                      <span className="text-dark" style={{ fontSize: '0.82rem', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '350px' }} title={item.originalUrl}>
-                        {item.originalUrl}
+                      <span className="text-dark" style={{ fontSize: '0.82rem', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '350px' }} title={item.originalDomain || 'N/A'}>
+                        {item.originalDomain || 'N/A'}
                       </span>
                     </td>
                     <td className="py-3 text-center" style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #f0f2f5' }}>

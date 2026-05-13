@@ -27,7 +27,7 @@ export const downloadQRCode = async (shortCode, format = 'png', size = 300) => {
   return response.data;
 };
 
-export const deleteLink = async (id) => {
-  const response = await api.delete(`/urls/links/${id}`);
+export const deleteLink = async (shortCode) => {
+  const response = await api.delete(`/urls/links/${shortCode}`);
   return response.data;
 };

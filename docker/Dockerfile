@@ -28,6 +28,7 @@ COPY --from=backend-builder /backend/node_modules ./node_modules
 COPY --from=backend-builder /backend/package*.json ./
 COPY --from=backend-builder /backend/prisma ./prisma
 COPY backend/src ./src
+COPY backend/scripts ./scripts
 COPY backend/entrypoint.sh ./
 
 # Copy frontend dist

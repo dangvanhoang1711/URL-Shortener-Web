@@ -175,15 +175,15 @@ export default function ShortenForm() {
             <div className="list-group border-0 shadow-sm rounded-4">
               {history.map((item, index) => (
                 <div
-                  key={item.id}
+                  key={item.shortCode}
                   className="list-group-item list-group-item-action p-3 border-0 border-bottom list-item-animated"
                   style={{ animationDelay: `${index * 0.05}s` }}
                 >
                   <div className="d-flex justify-content-between align-items-center">
                     <div className="text-truncate me-3">
-                      <p className="mb-0 fw-bold text-primary">{window.location.origin}/{item.shortCode}</p>
+                      <p className="mb-0 fw-bold text-primary">{item.shortUrl || `${window.location.origin}/${item.shortCode}`}</p>
                       <small className="text-muted d-block text-truncate" style={{ maxWidth: '400px' }}>
-                        {item.originalUrl}
+                        {item.title || 'No title'}
                       </small>
                     </div>
                     <div className="d-flex align-items-center gap-2">
