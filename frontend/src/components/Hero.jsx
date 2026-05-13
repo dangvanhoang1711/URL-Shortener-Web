@@ -6,10 +6,11 @@ export default function Hero() {
   const navigate = useNavigate();
 
   const handleGetStarted = (e) => {
-    // Nếu chưa có user (chưa đăng nhập)
-    if (!user) {
-      e.preventDefault(); // Ngăn hành động chuyển đến trang /shorten của thẻ Link
-      navigate('/login'); // Chuyển hướng sang trang login
+    e.preventDefault();
+    if (user) {
+      navigate('/dashboard');
+    } else {
+      navigate('/login');
     }
   };
 
