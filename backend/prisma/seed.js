@@ -45,12 +45,12 @@ async function main() {
   }
 
   if (createdUrls[0]) {
-    await prisma.qrCode.upsert({
+    await prisma.qRCode.upsert({
       where: { urlId: createdUrls[0].id },
       update: {},
       create: {
         urlId: createdUrls[0].id,
-        imageData: qrPlaceholder
+        qrData: qrPlaceholder
       }
     });
   }

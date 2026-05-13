@@ -24,8 +24,8 @@ class AuthService {
     }
 
     // Kiểm tra password strength (tối thiểu 6 ký tự)
-    if (password.length < 6) {
-      throw new ValidationError('Password must be at least 6 characters long');
+    if (password.length < 8) {
+      throw new ValidationError('Password must be at least 8 characters long');
     }
 
     // Validate email format đơn giản

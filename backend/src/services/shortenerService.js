@@ -32,24 +32,24 @@ async function createShortUrl(originalUrl, userId = null, title = null) {
     }
   }
 
-  const newUrl = await prisma.url.create({
-    data: {
-      originalUrl: normalizedUrl,
-      userId: userId,
-      title: title || null,
-    },
+  const url = await prisma.$transaction(async (tx) => {
+    const created = await tx.url.create({
+      data: {
+        originalUrl: normalizedUrl,
+        userId: userId,
+        title: title || null,
+      },
+    });
+
+    const shortCode = encodeBase62(created.id);
+
+    return tx.url.update({
+      where: { id: created.id },
+      data: { shortCode },
+    });
   });
 
-  const shortCode = encodeBase62(newUrl.id);
-
-  const updatedUrl = await prisma.url.update({
-    where: { id: newUrl.id },
-    data: {
-      shortCode: shortCode
-    },
-  });
-
-  return updatedUrl;
+  return url;
 }
 
 async function getHistory(userId) {

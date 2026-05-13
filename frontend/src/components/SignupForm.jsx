@@ -49,8 +49,8 @@ export default function SignupForm() {
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters');
       return;
     }
 
@@ -128,7 +128,7 @@ export default function SignupForm() {
                     type="password"
                     name="password"
                     className="form-control form-control-lg border-2 bg-light shadow-none input-animated"
-                    placeholder="Min 6 characters"
+                    placeholder="Min 8 characters"
                     style={{ borderRadius: '12px', fontSize: '1rem', paddingLeft: '2.8rem' }}
                     value={formData.password}
                     onChange={handleChange}

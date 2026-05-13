@@ -4,19 +4,24 @@ import { useEffect } from 'react';
 import ProtectedRoute from './hooks/ProtectedRoute';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import ShortenForm from './components/ShortenForm';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import Footer from './components/Footer';
-import QrForm from './components/QrForm';
 import Dashboard from './pages/Dashboard';
 import Stats from './pages/Stats';
+import Features from './pages/Features';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
+import Contact from './pages/Contact';
+import ForgotPassword from './pages/ForgotPassword';
+import VerifyPin from './pages/VerifyPin';
+import ResetPassword from './pages/ResetPassword';
 
 function RedirectHandler() {
   const { shortCode } = useParams();
   useEffect(() => {
     if (shortCode) {
-      window.location.replace(`http://localhost:3000/api/urls/${shortCode}`);
+      window.location.replace(`/api/urls/${shortCode}`);
     }
   }, [shortCode]);
   return null;
@@ -45,9 +50,15 @@ function App() {
         <div className="container">
           <Routes>
             <Route path="/" element={<Hero />} />
-            <Route path="/qr-generator" element={<QrForm />} />
+            <Route path="/features" element={<Features />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignupForm />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/verify-pin" element={<VerifyPin />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
 
             <Route
               path="/dashboard"
