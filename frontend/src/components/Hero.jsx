@@ -1,6 +1,18 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // Import hook dùng để check login
 
 export default function Hero() {
+  const { user } = useAuth(); // Lấy thông tin user từ Context
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    if (!user) {
+      navigate('/login');
+    } else {
+      navigate('/dashboard');
+    }
+  };
+
   return (
     <div className="row align-items-center g-5">
       {/* Cột bên trái: Nội dung chữ */}
@@ -13,19 +25,20 @@ export default function Hero() {
         </p>
         
         <div className="d-flex gap-3 justify-content-center justify-content-lg-start">
-          {/* Dùng Link to="/shorten" để chuyển trang mượt mà */}
-          <Link 
-            to="/shorten" 
+          {/* Thay đổi: Thêm sự kiện onClick để kiểm tra trước khi chuyển trang */}
+          <button
+            onClick={handleGetStarted}
             className="btn btn-primary btn-lg px-5 py-3 rounded-pill fw-bold shadow-sm"
           >
             Get Started for Free
-          </Link>
+          </button>
           
-          <button className="btn btn-outline-dark btn-lg px-5 py-3 rounded-pill fw-bold">
+          <button onClick={() => navigate('/features')} className="btn btn-outline-dark btn-lg px-5 py-3 rounded-pill fw-bold">
             Learn More
           </button>
         </div>
 
+        {/* ... các phần còn lại giữ nguyên ... */}
         <div className="mt-5 d-flex align-items-center gap-4 justify-content-center justify-content-lg-start text-muted">
           <div><span className="fw-bold text-dark">10K+</span> Users</div>
           <div className="vr"></div>
@@ -33,22 +46,17 @@ export default function Hero() {
         </div>
       </div>
       
-      {/* Cột bên phải: Hình ảnh minh họa hoặc Box trang trí */}
+      {/* Cột bên phải giữ nguyên */}
       <div className="col-lg-6 d-none d-lg-block text-center">
         <div className="position-relative">
-          {/* Một cái hộp trắng đổ bóng nhìn cho sang trọng */}
           <div className="bg-white p-5 shadow-lg rounded-5 transform-hover transition">
              <div className="display-1 text-primary mb-4">🔗</div>
              <h3 className="fw-bold mb-3">4H's Shortener</h3>
              <p className="text-muted">Create. Share. Track.</p>
-             
-             {/* Giả lập một cái link đã rút gọn */}
              <div className="bg-light p-3 rounded-3 border border-dashed border-primary">
                 <code className="text-primary fw-bold">4hs.link/my-awesome-url</code>
              </div>
           </div>
-          
-          {/* Trang trí thêm một cái bóng mờ phía sau */}
           <div 
             className="position-absolute top-50 start-50 translate-middle bg-primary opacity-10 rounded-circle" 
             style={{ width: '400px', height: '400px', zIndex: -1, filter: 'blur(50px)' }}

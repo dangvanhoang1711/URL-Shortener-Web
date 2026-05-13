@@ -8,12 +8,16 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique @db.VarChar(191)
-  password  String   @db.VarChar(255)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  urls      Url[]
+  id            Int      @id @default(autoincrement())
+  email         String   @unique @db.VarChar(191)
+  password      String?  @db.VarChar(255) // Cho phép null vì login Google không có pass
+  name          String?  @db.VarChar(191) // Thêm tên người dùng từ Google
+  image         String?  @db.Text         // Thêm ảnh đại diện từ Google
+  provider      String   @default("credentials") // "google", "facebook", hoặc "credentials"
+  providerId    String?  @unique // ID định danh của Google/Facebook cấp cho user
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  urls          Url[]
 
   @@map("users")
 }
@@ -21,7 +25,7 @@ model User {
 model Url {
   id            Int       @id @default(autoincrement())
   originalUrl   String    @db.Text
-  shortCode     String?    @unique @db.VarChar(20)
+  shortCode     String    @unique @db.VarChar(20)
   title         String?   @db.VarChar(191)
   clickCount    Int       @default(0)
   userId        Int?
@@ -32,10 +36,13 @@ model Url {
 
   user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
   clicks Click[]
+  qrCode QRCode?
 
   @@index([createdAt])
   @@index([userId, createdAt])
   @@index([clickCount])
+  @@index([clickCount, createdAt])
+  @@index([lastClickedAt])
   @@map("urls")
 }
 
@@ -53,4 +60,39 @@ model Click {
   @@index([urlId, clickedAt])
   @@index([clickedAt])
   @@map("clicks")
+}
+
+model PasswordResetToken {
+  id        Int      @id @default(autoincrement())
+  email     String   @db.VarChar(191)
+  pin       String   @db.VarChar(255)
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@map("password_reset_tokens")
+}
+
+model Contact {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(191)
+  email     String   @db.VarChar(191)
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+
+  @@map("contacts")
+}
+
+model QRCode {
+  id        Int      @id @default(autoincrement())
+  urlId     Int      @unique
+  qrData    String   @db.LongText  // Base64 encoded image (PNG) or SVG string
+  format    String   @default("png")  // "png" or "svg"
+  size      Int      @default(300)  // QR code size (px)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  url       Url      @relation(fields: [urlId], references: [id], onDelete: Cascade)
+
+  @@map("qr_codes")
 }

@@ -44,8 +44,6 @@ Thumbs.db
 # ========================
 # 🔥 PRISMA
 # ========================
-prisma/migrations/*
-!prisma/migrations/.gitkeep
 
 # ========================
 # 🔥 DOCKER
@@ -76,6 +74,7 @@ frontend/dist/
 # ========================
 # 🔥 MISC
 *.local
-*.cache# ========================
+*.cache
+
 # ========================
 

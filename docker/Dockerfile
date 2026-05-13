@@ -21,14 +21,14 @@ FROM node:20-alpine
 WORKDIR /app
 
 # Thêm bash vì file entrypoint.sh của bạn dùng bash logic
-RUN apk add --no-cache dumb-init curl mysql-client bash
+RUN apk add --no-cache dumb-init curl mysql-client bash ca-certificates
 
 # Copy backend
 COPY --from=backend-builder /backend/node_modules ./node_modules
 COPY --from=backend-builder /backend/package*.json ./
 COPY --from=backend-builder /backend/prisma ./prisma
 COPY backend/src ./src
-COPY backend/.env* ./
+COPY backend/scripts ./scripts
 COPY backend/entrypoint.sh ./
 
 # Copy frontend dist
@@ -42,7 +42,7 @@ EXPOSE 3000
 
 # Health check 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
-  CMD curl -f http://localhost:3001/health || exit 1
+  CMD curl -f http://localhost:3000/health || exit 1
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 

@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export default function Footer() {
   return (
     <footer className="bg-white border-top py-4 mt-auto">
@@ -12,9 +14,9 @@ export default function Footer() {
 
           {/* Bên phải: Các liên kết nhanh */}
           <div className="col-md-6 text-center text-md-end mt-2 mt-md-0">
-            <a href="#" className="text-muted text-decoration-none me-3 small">Privacy</a>
-            <a href="#" className="text-muted text-decoration-none me-3 small">Terms</a>
-            <a href="#" className="text-muted text-decoration-none small">Contact</a>
+            <Link to="/privacy" className="text-muted text-decoration-none me-3 small">Privacy</Link>
+            <Link to="/terms" className="text-muted text-decoration-none me-3 small">Terms</Link>
+            <Link to="/contact" className="text-muted text-decoration-none small">Contact</Link>
           </div>
 
         </div>

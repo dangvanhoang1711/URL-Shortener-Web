@@ -1,84 +1,98 @@
 const prisma = require("../config/prisma");
-const redis = require("../config/redis");
+const { getRedisClient } = require("../utils/redis");
 
-/**
- * GET ORIGINAL URL (Redis → DB)
- */
+const SHORT_CODE_REGEX = /^[a-zA-Z0-9_-]+$/;
+
 async function getOriginalUrl(code) {
-  // 1. Redis cache
-  const cached = await redis.get(code);
-  if (cached) return cached;
+  if (!SHORT_CODE_REGEX.test(code)) return null;
 
-  // 2. DB fallback
+  const redis = await getRedisClient();
+  if (redis) {
+    const cached = await redis.get(`url:${code}`);
+    if (cached) return cached;
+  }
+
   const record = await prisma.url.findUnique({
-    where: { short_code: code }
+    where: { shortCode: code }
   });
 
   if (!record) return null;
 
-  // 3. save cache
-  await redis.set(code, record.original_url, {
-    EX: 86400
-  });
+  if (redis) {
+    await redis.set(`url:${code}`, record.originalUrl, { EX: 86400 });
+  }
 
-  return record.original_url;
+  return record.originalUrl;
 }
 
-/**
- * TRACK CLICK (optimized version)
- */
 async function trackClick(code, req) {
-  // chỉ query 1 lần
-  const url = await prisma.url.findUnique({
-    where: { short_code: code },
-    select: { id: true }
-  });
+  if (!SHORT_CODE_REGEX.test(code)) return;
+
+  const url = await prisma.url.update({
+    where: { shortCode: code },
+    data: {
+      clickCount: { increment: 1 },
+      lastClickedAt: new Date()
+    }
+  }).catch(() => null);
 
   if (!url) return;
 
-  // 1. atomic increment (chuẩn hơn)
-  await prisma.url.update({
-    where: { short_code: code },
-    data: {
-      click_count: {
-        increment: 1
-      }
-    }
-  });
+  const redis = await getRedisClient();
+  if (redis) {
+    await redis.set(`url:${code}`, url.originalUrl, { EX: 86400 });
+  }
 
-  // 2. log click (không block redirect)
   await prisma.click.create({
     data: {
       urlId: url.id,
-      ip: req.ip || req.headers["x-forwarded-for"] || null,
+      ipAddress: req.ip || req.headers["x-forwarded-for"] || null,
       userAgent: req.headers["user-agent"] || null
     }
-  });
+  }).catch(() => {});
 }
 
-/**
- * ANALYTICS API
- */
 async function getStats(code) {
+  if (!SHORT_CODE_REGEX.test(code)) return null;
+
   const url = await prisma.url.findUnique({
-    where: { short_code: code },
-    include: {
+    where: { shortCode: code },
+    select: {
+      shortCode: true,
+      clickCount: true,
       clicks: {
-        orderBy: { clicked_at: "desc" },
-        take: 50
+        orderBy: { clickedAt: "desc" },
+        take: 100
       }
     }
   });
 
   if (!url) return null;
 
+  const last7Days = [];
+  const now = Date.now();
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    last7Days.push(d.toISOString().split('T')[0]);
+  }
+
+  const dailyClicks = last7Days.map(date => {
+    const count = url.clicks.filter(c => {
+      const clickDate = new Date(c.clickedAt).toISOString().split('T')[0];
+      return clickDate === date;
+    }).length;
+    return { date, clicks: count };
+  });
+
   return {
-    short_code: code,
-    total_clicks: url.click_count,
-    clicks: url.clicks.map(c => ({
-      time: c.clicked_at,
-      ip: c.ip,
-      user_agent: c.userAgent
+    shortCode: url.shortCode,
+    totalClicks: url.clickCount,
+    dailyClicks,
+    recentClicks: url.clicks.map(c => ({
+      time: c.clickedAt,
+      ip: c.ipAddress,
+      userAgent: c.userAgent
     }))
   };
 }
