@@ -1,6 +1,0 @@
-{
-  "rewrites": [
-    { "source": "/api/:path*", "destination": "https://url-shortener.onrender.com/api/:path*" },
-    { "source": "/(.*)", "destination": "/" }
-  ]
-}
