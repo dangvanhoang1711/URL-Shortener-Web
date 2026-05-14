@@ -14,10 +14,10 @@ exports.generateQRCode = asyncHandler(async (req, res) => {
     return res.status(404).json({ error: "URL not found" });
   }
 
-  const baseUrl = `${req.protocol}://${req.get('host')}`;
-  const shortUrl = `${baseUrl}/${short_code}`;
+  // Sử dụng originalUrl thay vì shortUrl để QR code chứa link gốc
+  const originalUrl = urlRecord.originalUrl;
 
-  const qrData = await generateQRForURL(urlRecord.id, shortUrl, { format, size });
+  const qrData = await generateQRForURL(urlRecord.id, originalUrl, { format, size });
 
   res.json({
     success: true,
